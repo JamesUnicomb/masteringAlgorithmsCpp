@@ -21,8 +21,8 @@ class LList
 {
 public:
     const int getSize() { return size; }
-    LListElmt<T> *&getHead() { return head; }
-    LListElmt<T> *&getTail() { return tail; }
+    LListElmt<T> *getHead() const { return head; }
+    LListElmt<T> *getTail() const { return tail; }
     void insertTail(T data)
     {
         insertNext(tail, data);
