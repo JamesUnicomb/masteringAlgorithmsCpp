@@ -7,11 +7,11 @@ template <typename T>
 class LListElmt
 {
 private:
-    T *data = nullptr;
-    LListElmt *next = nullptr;
+    T *data;
+    LListElmt *next;
 
 public:
-    LListElmt(T data) : data(new T(data)) {}
+    LListElmt(T data) : data(new T(data)), next(nullptr) {}
     LListElmt<T> *&getNext() { return next; }
     T getData() { return *data; }
 };
@@ -20,6 +20,7 @@ template <typename T>
 class LList
 {
 public:
+    LList() : size(0), head(nullptr), tail(nullptr) {}
     const int getSize() { return size; }
     LListElmt<T> *getHead() const { return head; }
     LListElmt<T> *getTail() const { return tail; }
@@ -63,53 +64,64 @@ public:
 private:
     void insertNext(LListElmt<T> *node, T data)
     {
-        if (size == 0)
+        LListElmt<T> *newnode = new LListElmt<T>(data);
+        if (node)
         {
-            head = tail = new LListElmt<T>(data);
-        }
-        else if (!node)
-        {
-            LListElmt<T> *node = new LListElmt<T>(data);
-            node->getNext() = head;
-            head = node;
-        }
-        else if (node->getNext())
-        {
-            LListElmt<T> *next = node->getNext();
-            next->getNext() = new LListElmt<T>(data);
-            node->getNext()->getNext() = next;
+            if (node->getNext())
+            {
+                newnode->getNext() = node->getNext();
+            }
+            else
+            {
+                tail = newnode;
+            }
+            node->getNext() = newnode;
         }
         else
         {
-            node->getNext() = new LListElmt<T>(data);
-            tail = node->getNext();
+            if (size == 0)
+            {
+                tail = newnode;
+            }
+            newnode->getNext() = head;
+            head = newnode;
         }
         size += 1;
     }
     void removeNext(LListElmt<T> *node)
     {
-
-        if (!node)
+        if (size != 0)
         {
-            LListElmt<T> *next = head->getNext();
-            delete head;
-            head = next;
-        }
-        else
-        {
-            if (size != 0)
+            if (node)
             {
+
                 LListElmt<T> *next = node->getNext();
                 node->getNext() = next->getNext();
                 delete next;
+
+                if (!node->getNext())
+                {
+                    tail = node;
+                }
+            }
+            else
+            {
+                LListElmt<T> *next = head->getNext();
+                delete head;
+                head = next;
+
+                if (size == 1)
+                {
+                    tail = nullptr;
+                }
             }
         }
         size -= 1;
     }
 
-    int size = 0;
-    LListElmt<T> *head = nullptr;
-    LListElmt<T> *tail = nullptr;
+    int size;
+    LListElmt<T> *head;
+    LListElmt<T> *tail;
 };
 
 #endif
