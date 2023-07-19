@@ -17,4 +17,9 @@ int main()
     cout << "peek = " << stack.peek()->getData() << endl;
     cout << "pop = " << stack.pop()->getData() << endl;
     cout << "pop = " << stack.pop()->getData() << endl;
+
+    if (!stack.peek())
+    {
+        cout << "stack empty" << endl;
+    }
 }

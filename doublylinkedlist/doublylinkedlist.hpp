@@ -1,5 +1,5 @@
-#ifndef __LIST_HPP__
-#define __LIST_HPP__
+#ifndef __DLIST_HPP__
+#define __DLIST_HPP__
 
 #include <iostream>
 

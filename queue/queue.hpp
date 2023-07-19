@@ -16,34 +16,18 @@ public:
     {
         this->insertTail(data);
     }
-
-    QueueElmt<T> *dequeue()
-    {
-        if (this->getSize() != 0)
-        {
-            QueueElmt<T> *node;
-            node = this->getHead();
-            this->removeHead();
-            return node;
-        }
-        else
-        {
-            return nullptr;
-        }
-    }
-
     QueueElmt<T> *peek()
     {
-        if (this->getSize() != 0)
+        return this->getHead();
+    }
+    QueueElmt<T> *dequeue()
+    {
+        QueueElmt<T> *node = this->getHead();
+        if (node)
         {
-            QueueElmt<T> *node;
-            node = this->getHead();
-            return node;
+            this->removeHead();
         }
-        else
-        {
-            return nullptr;
-        }
+        return node;
     }
 };
 

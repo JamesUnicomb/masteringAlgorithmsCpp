@@ -16,34 +16,18 @@ public:
     {
         this->insertHead(data);
     }
-
-    StackElmt<T> *pop()
-    {
-        if (this->getSize() != 0)
-        {
-            StackElmt<T> *node;
-            node = this->getHead();
-            this->removeHead();
-            return node;
-        }
-        else
-        {
-            return nullptr;
-        }
-    }
-
     StackElmt<T> *peek()
     {
-        if (this->getSize() != 0)
+        return this->getHead();
+    }
+    StackElmt<T> *pop()
+    {
+        StackElmt<T> *node = this->getHead();
+        if (node)
         {
-            StackElmt<T> *node;
-            node = this->getHead();
-            return node;
+            this->removeHead();
         }
-        else
-        {
-            return nullptr;
-        }
+        return node;
     }
 };
 

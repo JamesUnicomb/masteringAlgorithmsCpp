@@ -17,4 +17,9 @@ int main()
     cout << "peek = " << queue.peek()->getData() << endl;
     cout << "dequeue = " << queue.dequeue()->getData() << endl;
     cout << "dequeue = " << queue.dequeue()->getData() << endl;
+
+    if (!queue.peek())
+    {
+        cout << "queue empty" << endl;
+    }
 }
