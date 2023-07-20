@@ -29,4 +29,5 @@ dequeue = 1
 peek = 2
 dequeue = 2
 dequeue = 3
+queue empty
 ```

@@ -9,9 +9,10 @@ template <typename T>
 using StackElmt = LListElmt<T>;
 
 template <typename T>
-class Stack : public LList<T>
+class Stack : private LList<T>
 {
 public:
+    const int getSize() { return this->size; }
     void push(T data)
     {
         this->insertHead(data);
@@ -22,7 +23,8 @@ public:
     }
     StackElmt<T> *pop()
     {
-        StackElmt<T> *node = this->getHead();
+        StackElmt<T> *node = new StackElmt<T>;
+        *node = *this->getHead();
         if (node)
         {
             this->removeHead();

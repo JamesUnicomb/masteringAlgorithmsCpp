@@ -39,10 +39,6 @@ tail = 1
 6-4-3-2-1-nullptr
 size = 5
 head = 6
-tail = 1
-6-4-3-2-1-0-nullptr
-size = 6
-head = 6
 tail = 0
 0-nullptr
 size = 1
@@ -51,5 +47,4 @@ tail = 0
 nullptr
 size = 0
 head = nullptr
-tail = nullptr
 ```

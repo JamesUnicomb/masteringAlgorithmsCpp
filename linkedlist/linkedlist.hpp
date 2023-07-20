@@ -11,6 +11,7 @@ private:
     LListElmt *next;
 
 public:
+    LListElmt() : data(nullptr), next(nullptr) {}
     LListElmt(T data) : data(new T(data)), next(nullptr) {}
     LListElmt<T> *&getNext() { return next; }
     T getData() { return *data; }
@@ -20,6 +21,7 @@ template <typename T>
 class LList
 {
 public:
+    int size;
     LList() : size(0), head(nullptr), tail(nullptr) {}
     const int getSize() { return size; }
     LListElmt<T> *getHead() const { return head; }
@@ -118,8 +120,6 @@ private:
         }
         size -= 1;
     }
-
-    int size;
     LListElmt<T> *head;
     LListElmt<T> *tail;
 };

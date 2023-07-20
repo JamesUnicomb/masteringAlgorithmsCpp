@@ -9,9 +9,10 @@ template <typename T>
 using QueueElmt = LListElmt<T>;
 
 template <typename T>
-class Queue : public LList<T>
+class Queue : private LList<T>
 {
 public:
+    const int getSize() { return this->size; }
     void enqueue(T data)
     {
         this->insertTail(data);
@@ -22,7 +23,8 @@ public:
     }
     QueueElmt<T> *dequeue()
     {
-        QueueElmt<T> *node = this->getHead();
+        QueueElmt<T> *node = new QueueElmt<T>;
+        *node = *this->getHead();
         if (node)
         {
             this->removeHead();

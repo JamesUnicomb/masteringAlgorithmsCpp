@@ -55,6 +55,7 @@ int main()
     cout << "tail = " << list.getTail()->getData() << endl;
 
     list.removeHead();
+    list.removeHead();
     list.display();
     cout << "size = " << list.getSize() << endl;
     if (!list.getHead())

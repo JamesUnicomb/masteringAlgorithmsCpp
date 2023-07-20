@@ -29,4 +29,5 @@ pop = 3
 peek = 2
 pop = 2
 pop = 1
+stack empty
 ```
