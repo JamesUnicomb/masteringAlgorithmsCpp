@@ -8,7 +8,6 @@ template <typename T, typename H1, typename H2>
 class OAHTbl
 {
 public:
-    OAHTbl(const unsigned int positions) : size(0), positions(positions), vacated(nullptr), tbl(new T *[positions]) {}
     OAHTbl(const unsigned int positions, T *vacated) : size(0), positions(positions), vacated(vacated), tbl(new T *[positions]) {}
     void insert(T data)
     {
