@@ -2,7 +2,7 @@
 #define __CHTBL_HPP__
 
 #include <iostream>
-#include "../linkedlist/linkedlist.hpp"
+#include "../../linkedlist/linkedlist.hpp"
 
 template <typename T, typename H1, typename H2>
 class OAHTbl

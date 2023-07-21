@@ -1,7 +1,7 @@
 #include <iostream>
 #include "oahtbl.hpp"
-#include "../utils/hashpjw.hpp"
-#include "../utils/djb2.hpp"
+#include "../../utils/hashpjw.hpp"
+#include "../../utils/djb2.hpp"
 
 using namespace std;
 
