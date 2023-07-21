@@ -62,8 +62,6 @@ public:
         tail = head;
         head = prev;
     }
-
-private:
     void insertNext(LListElmt<T> *node, T data)
     {
         LListElmt<T> *newnode = new LListElmt<T>(data);
@@ -120,6 +118,8 @@ private:
         }
         size -= 1;
     }
+
+private:
     LListElmt<T> *head;
     LListElmt<T> *tail;
 };
