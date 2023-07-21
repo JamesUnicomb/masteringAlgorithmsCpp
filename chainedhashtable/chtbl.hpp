@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "../linkedlist/linkedlist.hpp"
-#include "../utils/hashpjw.hpp"
 
 template <typename T, typename H>
 class CHTbl

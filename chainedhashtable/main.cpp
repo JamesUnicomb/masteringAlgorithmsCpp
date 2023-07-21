@@ -1,5 +1,6 @@
 #include <iostream>
 #include "chtbl.hpp"
+#include "../utils/hashpjw.hpp"
 
 using namespace std;
 
