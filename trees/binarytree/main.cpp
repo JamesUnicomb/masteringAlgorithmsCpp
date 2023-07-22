@@ -35,4 +35,8 @@ int main()
     cout << "height = " << tree.getRoot()->getHeight() << endl;
 
     cout << "size = " << tree.getSize() << endl;
+
+    LList<int> llist = *tree.toList();
+
+    llist.display();
 }

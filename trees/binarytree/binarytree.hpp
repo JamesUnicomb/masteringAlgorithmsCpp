@@ -1,4 +1,5 @@
 #include <iostream>
+#include "../../linkedlist/linkedlist.hpp"
 
 #define max(a, b) ((a > b) ? a : b)
 
@@ -29,6 +30,22 @@ public:
     {
         std::cout << node->getData() << " ";
     }
+};
+
+template <typename T>
+class TreeToList
+{
+public:
+    TreeToList(int size) : i(0), llist(new LList<T>()) {}
+    void operator()(TreeNode<T> *node)
+    {
+        llist->insertTail(node->getData());
+    }
+    LList<T> *getLList() { return llist; }
+
+private:
+    int i;
+    LList<T> *llist;
 };
 
 template <typename T>
@@ -107,6 +124,13 @@ public:
         }
     }
 
+    LList<T> *toList()
+    {
+        TreeToList<T> ttl(getSize());
+        traverseInOrder(ttl);
+        return ttl.getLList();
+    }
+
 private:
     inline int height(TreeNode<T> *node)
     {
@@ -150,7 +174,7 @@ private:
         return node;
     }
     template <typename F>
-    void traverseInOrder(TreeNode<T> *node, F f)
+    void traverseInOrder(TreeNode<T> *node, F &f)
     {
         if (node->getLeft())
         {
@@ -163,7 +187,7 @@ private:
         }
     }
     template <typename F>
-    void traversePreOrder(TreeNode<T> *node, F f)
+    void traversePreOrder(TreeNode<T> *node, F &f)
     {
         f(node);
         if (node->getLeft())
