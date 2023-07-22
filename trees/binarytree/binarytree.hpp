@@ -1,3 +1,6 @@
+#ifndef __BINARYTREE_HPP__
+#define __BINARYTREE_HPP__
+
 #include <iostream>
 #include "../../linkedlist/linkedlist.hpp"
 
@@ -299,3 +302,5 @@ private:
     int size;
     TreeNode<T> *root;
 };
+
+#endif
