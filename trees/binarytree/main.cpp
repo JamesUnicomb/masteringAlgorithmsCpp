@@ -7,27 +7,10 @@ int main()
 {
     Tree<int> tree;
 
-    tree.insert(80);
-    tree.insert(9);
-    tree.insert(75);
-    tree.insert(25);
-    tree.insert(24);
-    tree.insert(12);
-    tree.insert(57);
-    tree.insert(53);
-    tree.insert(88);
-    tree.insert(6);
-    tree.insert(23);
-    tree.insert(64);
-    tree.insert(38);
-    tree.insert(81);
-    tree.insert(17);
-    tree.insert(14);
-    tree.insert(4);
-    tree.insert(87);
-    tree.insert(84);
-    tree.insert(31);
-    tree.insert(29);
+    for (int i = 0; i < 7; i++)
+    {
+        tree.insert(i);
+    }
 
     tree.display();
     tree.pprint();
@@ -39,4 +22,24 @@ int main()
     LList<int> llist = *tree.toList();
 
     llist.display();
+
+    int s1 = 5;
+    if (tree.find(s1))
+    {
+        cout << "found:" << s1 << endl;
+    }
+    else
+    {
+        cout << "did not find:" << s1 << endl;
+    }
+
+    int s2 = 15;
+    if (tree.find(s2))
+    {
+        cout << "found:" << s2 << endl;
+    }
+    else
+    {
+        cout << "did not find:" << s2 << endl;
+    }
 }

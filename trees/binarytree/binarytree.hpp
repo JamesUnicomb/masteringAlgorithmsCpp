@@ -48,6 +48,7 @@ private:
     LList<T> *llist;
 };
 
+// tree structure for control of tree nodes
 template <typename T>
 class Tree
 {
@@ -129,6 +130,11 @@ public:
         TreeToList<T> ttl(getSize());
         traverseInOrder(ttl);
         return ttl.getLList();
+    }
+
+    TreeNode<T> *find(T data)
+    {
+        return find(root, data);
     }
 
 private:
@@ -268,6 +274,26 @@ private:
         }
 
         return node;
+    }
+
+    TreeNode<T> *find(TreeNode<T> *node, T data)
+    {
+        if (node)
+        {
+            if (data == node->getData())
+            {
+                return node;
+            }
+            else if (data < node->getData())
+            {
+                return find(node->getLeft(), data);
+            }
+            else if (data > node->getData())
+            {
+                return find(node->getRight(), data);
+            }
+        }
+        return nullptr;
     }
 
     int size;
