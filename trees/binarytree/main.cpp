@@ -23,23 +23,15 @@ int main()
 
     llist.display();
 
-    int s1 = 5;
-    if (tree.find(s1))
+    for (int s = 0; s < 12; s++)
     {
-        cout << "found:" << s1 << endl;
-    }
-    else
-    {
-        cout << "did not find:" << s1 << endl;
-    }
-
-    int s2 = 15;
-    if (tree.find(s2))
-    {
-        cout << "found:" << s2 << endl;
-    }
-    else
-    {
-        cout << "did not find:" << s2 << endl;
+        if (tree.find(s))
+        {
+            cout << "found:" << s << endl;
+        }
+        else
+        {
+            cout << "did not find:" << s << endl;
+        }
     }
 }
