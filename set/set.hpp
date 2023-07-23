@@ -14,6 +14,10 @@ public:
     {
         tree.insert(data);
     }
+    void remove(T data)
+    {
+        tree.remove(data);
+    }
     int getSize()
     {
         return tree.getSize();
@@ -46,7 +50,7 @@ private:
 };
 
 template <typename T>
-Set<T> intersection(Set<T> a, Set<T> b)
+Set<T> setIntersection(Set<T> a, Set<T> b)
 {
     Set<T> c;
     int n = a.getSize(), m = b.getSize();
@@ -62,7 +66,7 @@ Set<T> intersection(Set<T> a, Set<T> b)
                 c.insert(node->getData());
             }
             node = node->getNext();
-                }
+        }
     }
     else
     {
@@ -76,6 +80,30 @@ Set<T> intersection(Set<T> a, Set<T> b)
             }
             node = node->getNext();
         }
+    }
+
+    return c;
+}
+
+template <typename T>
+Set<T> setUnion(Set<T> a, Set<T> b)
+{
+    Set<T> c;
+
+    LListElmt<T> *node = a.toList()->getHead();
+
+    while (node)
+    {
+        c.insert(node->getData());
+        node = node->getNext();
+    }
+
+    node = b.toList()->getHead();
+
+    while (node)
+    {
+        c.insert(node->getData());
+        node = node->getNext();
     }
 
     return c;

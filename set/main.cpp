@@ -23,6 +23,9 @@ int main()
     cout << "b = ";
     b.display();
 
-    cout << "insersection(a,b) = ";
-    intersection<int>(a, b).display();
+    cout << "setInsersection(a,b) = ";
+    setIntersection<int>(a, b).display();
+
+    cout << "setUnion(a,b) = ";
+    setUnion<int>(a, b).display();
 }
