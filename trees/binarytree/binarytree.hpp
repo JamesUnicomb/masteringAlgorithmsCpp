@@ -13,7 +13,7 @@ public:
     TreeNode(T data) : height(1), data(new T(data)), left(nullptr), right(nullptr) {}
     TreeNode<T> *&getLeft() { return left; }
     TreeNode<T> *&getRight() { return right; }
-    T getData() { return *data; }
+    T &getData() { return *data; }
     int getHeight() { return height; }
     void setHeight(int h) { height = h; }
 
@@ -58,7 +58,7 @@ class Tree
 public:
     Tree() : size(0), root(nullptr) {}
     TreeNode<T> *&getRoot() { return root; }
-    int getSize() { return size; }
+    inline int getSize() { return size; }
     void insert(T data)
     {
         if (root)
@@ -71,7 +71,14 @@ public:
             size += 1;
         }
     }
-
+    TreeNode<T> *find(T data)
+    {
+        return find(root, data);
+    }
+    void remove(T data)
+    {
+        remove(root, data);
+    }
     template <typename F>
     void traverseInOrder(F f)
     {
@@ -133,11 +140,6 @@ public:
         TreeToList<T> ttl(getSize());
         traverseInOrder(ttl);
         return ttl.getLList();
-    }
-
-    TreeNode<T> *find(T data)
-    {
-        return find(root, data);
     }
 
 private:
@@ -297,6 +299,71 @@ private:
             }
         }
         return nullptr;
+    }
+
+    TreeNode<T> *remove(TreeNode<T> *node, T data)
+    {
+        if (node)
+        {
+            if (data < node->getData())
+            {
+                node->getLeft() = remove(node->getLeft(), data);
+                node->setHeight(max(height(node->getLeft()), height(node->getRight())) + 1);
+                return node;
+            }
+            else if (data > node->getData())
+            {
+                node->getRight() = remove(node->getRight(), data);
+                node->setHeight(max(height(node->getLeft()), height(node->getRight())) + 1);
+                return node;
+            }
+
+            size -= 1;
+            if (node->getLeft() && node->getRight())
+            {
+
+                TreeNode<T> *parent = node;
+                TreeNode<T> *succ = root->getRight();
+
+                while (succ->getLeft())
+                {
+                    parent = succ;
+                    succ = succ->getLeft();
+                }
+
+                if (parent != node)
+                {
+                    parent->getLeft() = succ->getRight();
+                }
+                else
+                {
+                    parent->getRight() = succ->getRight();
+                }
+
+                node->getData() = succ->getData();
+
+                delete succ;
+                return node;
+            }
+            else if (node->getLeft())
+            {
+                TreeNode<T> *tmp = node->getLeft();
+                delete node;
+                return tmp;
+            }
+            else if (node->getRight())
+            {
+                TreeNode<T> *tmp = node->getRight();
+                delete node;
+                return tmp;
+            }
+            else
+            {
+                return nullptr;
+            }
+        }
+
+        return node;
     }
 
     int size;

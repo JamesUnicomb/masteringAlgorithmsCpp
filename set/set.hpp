@@ -62,7 +62,7 @@ Set<T> intersection(Set<T> a, Set<T> b)
                 c.insert(node->getData());
             }
             node = node->getNext();
-        }
+                }
     }
     else
     {
