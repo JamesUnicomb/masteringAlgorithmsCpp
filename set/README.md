@@ -25,5 +25,9 @@ g++ main.cpp
 ```
 a = {1,2,3,4,5}
 b = {4,5,6}
-insersection(a,b) = {4,5}
+c = {1,2,3}
+setInsersection(a,b) = {4,5}
+setUnion(a,b) = {1,2,3,4,5,6}
+isSubset(a,b) = 0
+isSubset(c,a) = 1
 ```

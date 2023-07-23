@@ -109,4 +109,20 @@ Set<T> setUnion(Set<T> a, Set<T> b)
     return c;
 }
 
+template <typename T>
+bool isSubset(Set<T> a, Set<T> b)
+{
+    LListElmt<T> *node = a.toList()->getHead();
+
+    while (node)
+    {
+        if (!b.find(node->getData()))
+        {
+            return false;
+        }
+        node = node->getNext();
+    }
+    return true;
+}
+
 #endif
