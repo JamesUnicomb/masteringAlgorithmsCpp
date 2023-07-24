@@ -23,8 +23,9 @@ g++ main.cpp
 ## Output
 
 ```
+level order: 3 1 5 0 2 4 6 7 
 DisplayBegin:
-0 1 2 3 4 5 6 7 
+0 1 2 3 4 5 6 7
 :DisplayEnd
 B:3,4,1
  L:1,2,0
