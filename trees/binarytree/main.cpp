@@ -12,6 +12,11 @@ int main()
         tree.insert(i);
     }
 
+    cout << "level order: ";
+    PrintTreeNode<int> pn;
+    tree.traverseLevelOrder(pn);
+    std::cout << endl;
+
     tree.display();
     tree.pprint();
 

@@ -91,6 +91,15 @@ public:
         traversePreOrder(root, f);
     }
 
+    template <typename F>
+    void traverseLevelOrder(F f)
+    {
+        for (int i = 0; i < root->getHeight(); i++)
+        {
+            traverseLevelOrder(root, f, i);
+        }
+    }
+
     void display()
     {
         PrintTreeNode<T> pn;
@@ -210,6 +219,35 @@ private:
             traverseInOrder(node->getRight(), f);
         }
     }
+
+    template <typename F>
+    void traverseLevelOrder(TreeNode<T> *node, F f, int level)
+    {
+        if (node)
+        {
+            if (level == 0)
+            {
+                f(node);
+            }
+            else
+            {
+                traverseLevelOrder(node->getLeft(), f, level - 1);
+                traverseLevelOrder(node->getRight(), f, level - 1);
+            }
+        }
+    }
+
+    template <typename F>
+    void traverseCurrentLevel(TreeNode<T> *node, F f, int level, int i)
+    {
+        if (node)
+        {
+            std::cout << level << "," << node->getData() << std::endl;
+            traverseLevelOrder(node->getLeft(), f, level + 1);
+            traverseLevelOrder(node->getRight(), f, level + 1);
+        }
+    }
+
     TreeNode<T> *rotate_left(TreeNode<T> *node)
     {
         TreeNode<T> *right = node->getRight();
