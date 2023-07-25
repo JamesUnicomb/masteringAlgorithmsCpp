@@ -67,4 +67,8 @@ int main()
     {
         cout << "tail = nullptr" << endl;
     }
+
+    list.insertTail(10);
+    list.insertHead(11);
+    list.insertTail(12);
 }

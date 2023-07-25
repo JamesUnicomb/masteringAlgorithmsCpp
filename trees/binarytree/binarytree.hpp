@@ -19,7 +19,7 @@ public:
     ~TreeNode()
     {
 #if DEBUG
-        std::cout << "deleting:" << *data << std::endl;
+        std::cout << "~TreeNode<T>(" << *data << ")" << std::endl;
 #endif
         delete data;
     }
@@ -169,8 +169,11 @@ public:
     }
     ~Tree()
     {
-        DeleteTreeNode<T> dn;
-        traversePostOrder(root, dn);
+        if (root)
+        {
+            DeleteTreeNode<T> dn;
+            traversePostOrder(root, dn);
+        }
     }
 
 private:

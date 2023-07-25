@@ -50,7 +50,7 @@ private:
 };
 
 template <typename T>
-Set<T> setIntersection(Set<T> a, Set<T> b)
+Set<T> setIntersection(Set<T> &a, Set<T> &b)
 {
     Set<T> c;
     int n = a.getSize(), m = b.getSize();
@@ -86,7 +86,7 @@ Set<T> setIntersection(Set<T> a, Set<T> b)
 }
 
 template <typename T>
-Set<T> setUnion(Set<T> a, Set<T> b)
+Set<T> setUnion(Set<T> &a, Set<T> &b)
 {
     Set<T> c;
 
@@ -110,7 +110,7 @@ Set<T> setUnion(Set<T> a, Set<T> b)
 }
 
 template <typename T>
-bool isSubset(Set<T> a, Set<T> b)
+bool isSubset(Set<T> &a, Set<T> &b)
 {
     LListElmt<T> *node = a.toList()->getHead();
 
@@ -122,6 +122,7 @@ bool isSubset(Set<T> a, Set<T> b)
         }
         node = node->getNext();
     }
+
     return true;
 }
 

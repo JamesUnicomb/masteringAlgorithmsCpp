@@ -85,8 +85,8 @@ B:3,4,1
    R:7,1,0
 height = 4
 size = 8
-deleting:7                       # deletion when calling remove
-deleting:4                       # deletion when calling remove
+~TreeNode<T>(7)                       # deletion when calling remove
+~TreeNode<T>(4)                       # deletion when calling remove
 B:4,3,0
  L:1,2,0
   L:0,1,0
@@ -108,10 +108,10 @@ did not find:8
 did not find:9
 did not find:10
 did not find:11
-deleting:0                       # deletion when Tree goes out of scope
-deleting:1                       # deletion when Tree goes out of scope
-deleting:2                       # deletion when Tree goes out of scope
-deleting:5                       # deletion when Tree goes out of scope
-deleting:6                       # deletion when Tree goes out of scope
-deleting:4                       # deletion when Tree goes out of scope
+~TreeNode<T>(0)                       # deletion when Tree goes out of scope
+~TreeNode<T>(1)                       # deletion when Tree goes out of scope
+~TreeNode<T>(2)                       # deletion when Tree goes out of scope
+~TreeNode<T>(5)                       # deletion when Tree goes out of scope
+~TreeNode<T>(6)                       # deletion when Tree goes out of scope
+~TreeNode<T>(4)                       # deletion when Tree goes out of scope
 ```

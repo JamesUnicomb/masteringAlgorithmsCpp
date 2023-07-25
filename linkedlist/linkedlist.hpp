@@ -15,6 +15,13 @@ public:
     LListElmt(T data) : data(new T(data)), next(nullptr) {}
     LListElmt<T> *&getNext() { return next; }
     T getData() { return *data; }
+    ~LListElmt()
+    {
+#if DEBUG
+        std::cout << "~LListElmt<T>(" << *data << ")" << std::endl;
+#endif
+        delete data;
+    }
 };
 
 template <typename T>
@@ -117,6 +124,17 @@ public:
             }
         }
         size -= 1;
+    }
+    ~LList()
+    {
+        LListElmt<T> *node = head, *next;
+
+        while (node)
+        {
+            next = node->getNext();
+            delete node;
+            node = next;
+        }
     }
 
 private:
