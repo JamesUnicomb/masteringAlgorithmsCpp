@@ -4,18 +4,16 @@
 #include <iostream>
 #include "../../linkedlist/linkedlist.hpp"
 
-#define max(a, b) ((a > b) ? a : b)
-
 template <typename T>
 class TreeNode
 {
 public:
     TreeNode(T data) : height(1), data(new T(data)), left(nullptr), right(nullptr) {}
-    TreeNode<T> *&getLeft() { return left; }
-    TreeNode<T> *&getRight() { return right; }
-    T &getData() { return *data; }
-    int getHeight() { return height; }
-    void setHeight(int h) { height = h; }
+    inline TreeNode<T> *&getLeft() { return left; }
+    inline TreeNode<T> *&getRight() { return right; }
+    inline T &getData() { return *data; }
+    inline int getHeight() { return height; }
+    inline void setHeight(int height) { this->height = height; }
     ~TreeNode()
     {
 #if DEBUG
@@ -68,14 +66,17 @@ private:
     LList<T> *llist;
 };
 
-// tree structure for control of tree nodes
 template <typename T>
 class Tree
 {
 public:
     Tree() : size(0), root(nullptr) {}
-    TreeNode<T> *&getRoot() { return root; }
+    inline TreeNode<T> *&getRoot() { return root; }
     inline int getSize() { return size; }
+    inline int max(int a, int b)
+    {
+        return ((a > b) ? a : b);
+    }
     void insert(T data)
     {
         if (root)
@@ -99,13 +100,28 @@ public:
     template <typename F>
     void traverseInOrder(F f)
     {
-        traverseInOrder(root, f);
+        if (root)
+        {
+            traverseInOrder(root, f);
+        }
     }
 
     template <typename F>
     void traversePreOrder(F f)
     {
-        traversePreOrder(root, f);
+        if (root)
+        {
+            traversePreOrder(root, f);
+        }
+    }
+
+    template <typename F>
+    void traversePostOrder(F f)
+    {
+        if (root)
+        {
+            traversePostOrder(root, f);
+        }
     }
 
     template <typename F>
@@ -169,11 +185,8 @@ public:
     }
     ~Tree()
     {
-        if (root)
-        {
-            DeleteTreeNode<T> dn;
-            traversePostOrder(root, dn);
-        }
+        DeleteTreeNode<T> dn;
+        traversePostOrder(dn);
     }
 
 private:
@@ -257,6 +270,7 @@ private:
         }
         f(node);
     }
+
     template <typename F>
     void traverseLevelOrder(TreeNode<T> *node, F f, int level)
     {

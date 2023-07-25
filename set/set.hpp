@@ -6,6 +6,9 @@
 #include "../trees/binarytree/binarytree.hpp"
 
 template <typename T>
+using SetElmt = TreeNode<T>;
+
+template <typename T>
 class Set
 {
 public:
@@ -22,9 +25,9 @@ public:
     {
         return tree.getSize();
     }
-    bool find(T data)
+    SetElmt<T> *find(T data)
     {
-        return tree.find(data) ? true : false;
+        return tree.find(data);
     }
     void display()
     {
