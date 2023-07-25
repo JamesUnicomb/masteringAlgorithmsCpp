@@ -16,6 +16,13 @@ public:
     T &getData() { return *data; }
     int getHeight() { return height; }
     void setHeight(int h) { height = h; }
+    ~TreeNode()
+    {
+#if DEBUG
+        std::cout << "deleting:" << *data << std::endl;
+#endif
+        delete data;
+    }
 
 private:
     int height;
@@ -32,6 +39,16 @@ public:
     void operator()(TreeNode<T> *node)
     {
         std::cout << node->getData() << " ";
+    }
+};
+
+template <typename T>
+class DeleteTreeNode
+{
+public:
+    void operator()(TreeNode<T> *node)
+    {
+        delete node;
     }
 };
 
@@ -150,6 +167,11 @@ public:
         traverseInOrder(ttl);
         return ttl.getLList();
     }
+    ~Tree()
+    {
+        DeleteTreeNode<T> dn;
+        traversePostOrder(root, dn);
+    }
 
 private:
     inline int height(TreeNode<T> *node)
@@ -219,7 +241,19 @@ private:
             traverseInOrder(node->getRight(), f);
         }
     }
-
+    template <typename F>
+    void traversePostOrder(TreeNode<T> *node, F &f)
+    {
+        if (node->getLeft())
+        {
+            traverseInOrder(node->getLeft(), f);
+        }
+        if (node->getRight())
+        {
+            traverseInOrder(node->getRight(), f);
+        }
+        f(node);
+    }
     template <typename F>
     void traverseLevelOrder(TreeNode<T> *node, F f, int level)
     {
@@ -234,17 +268,6 @@ private:
                 traverseLevelOrder(node->getLeft(), f, level - 1);
                 traverseLevelOrder(node->getRight(), f, level - 1);
             }
-        }
-    }
-
-    template <typename F>
-    void traverseCurrentLevel(TreeNode<T> *node, F f, int level, int i)
-    {
-        if (node)
-        {
-            std::cout << level << "," << node->getData() << std::endl;
-            traverseLevelOrder(node->getLeft(), f, level + 1);
-            traverseLevelOrder(node->getRight(), f, level + 1);
         }
     }
 
@@ -397,6 +420,7 @@ private:
             }
             else
             {
+                delete node;
                 return nullptr;
             }
         }
