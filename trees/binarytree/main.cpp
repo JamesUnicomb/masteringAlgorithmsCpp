@@ -30,9 +30,6 @@ int main()
     cout << "height = " << tree.getRoot()->getHeight() << endl;
     cout << "size = " << tree.getSize() << endl;
 
-    LList<int> llist = *tree.toList();
-    llist.display();
-
     for (int s = 0; s < 12; s++)
     {
         if (tree.find(s))
@@ -50,11 +47,11 @@ int main()
     TreeNode<int> *node = tree.begin();
     Tree<int>::iterator it;
 
-    while (node)
+    while (node != tree.end())
     {
         cout << node->getData() << " ";
         node = it.next(node);
     }
     cout << endl
-         << ": iterator display finish" << endl;
+         << ":iterator display finish" << endl;
 }

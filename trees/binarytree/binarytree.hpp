@@ -54,22 +54,6 @@ public:
 };
 
 template <typename T>
-class TreeToList
-{
-public:
-    TreeToList(int size) : i(0), llist(new LList<T>()) {}
-    void operator()(TreeNode<T> *node)
-    {
-        llist->insertTail(node->getData());
-    }
-    LList<T> *getLList() { return llist; }
-
-private:
-    int i;
-    LList<T> *llist;
-};
-
-template <typename T>
 class Tree
 {
 public:
@@ -226,12 +210,6 @@ public:
         }
     }
 
-    LList<T> *toList()
-    {
-        TreeToList<T> ttl(getSize());
-        traverseInOrder(ttl);
-        return ttl.getLList();
-    }
     ~Tree()
     {
         DeleteTreeNode<T> dn;
