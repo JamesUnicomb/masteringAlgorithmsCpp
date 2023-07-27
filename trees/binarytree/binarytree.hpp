@@ -8,7 +8,9 @@ template <typename T>
 class TreeNode
 {
 public:
-    TreeNode(T data) : height(1), data(new T(data)), left(nullptr), right(nullptr) {}
+    TreeNode(T data) : height(1), data(new T(data)), parent(nullptr), left(nullptr), right(nullptr) {}
+    TreeNode(T data, TreeNode<T> *parent) : height(1), data(new T(data)), parent(parent), left(nullptr), right(nullptr) {}
+    TreeNode<T> *&getParent() { return parent; }
     inline TreeNode<T> *&getLeft() { return left; }
     inline TreeNode<T> *&getRight() { return right; }
     inline T &getData() { return *data; }
@@ -25,6 +27,7 @@ public:
 private:
     int height;
     T *data;
+    TreeNode *parent;
     TreeNode *left;
     TreeNode *right;
 };
@@ -77,6 +80,52 @@ public:
     {
         return ((a > b) ? a : b);
     }
+
+    struct iterator
+    {
+        static TreeNode<T> *first(TreeNode<T> *node)
+        {
+            if (node)
+            {
+                while (node->getLeft())
+                {
+                    node = node->getLeft();
+                }
+                return node;
+            }
+            return nullptr;
+        }
+        TreeNode<T> *next(TreeNode<T> *node)
+        {
+            if (node->getRight())
+            {
+                return first(node->getRight());
+            }
+
+            while (node->getParent() && node->getParent()->getRight() == node)
+            {
+                node = node->getParent();
+            }
+
+            if (node->getParent() && node->getParent()->getRight() != node)
+            {
+                return node->getParent();
+            }
+
+            return nullptr;
+        }
+    };
+
+    TreeNode<T> *begin()
+    {
+        return iterator::first(root);
+    }
+
+    TreeNode<T> *end()
+    {
+        return nullptr;
+    }
+
     void insert(T data)
     {
         if (root)
@@ -208,7 +257,7 @@ private:
             }
             else
             {
-                node->getLeft() = new TreeNode<T>(data);
+                node->getLeft() = new TreeNode<T>(data, node);
                 size += 1;
             }
         }
@@ -220,7 +269,7 @@ private:
             }
             else
             {
-                node->getRight() = new TreeNode<T>(data);
+                node->getRight() = new TreeNode<T>(data, node);
                 size += 1;
             }
         }
@@ -294,6 +343,13 @@ private:
         node->getRight() = right->getLeft();
         right->getLeft() = node;
 
+        right->getParent() = node->getParent();
+        if (node->getRight())
+        {
+            node->getRight()->getParent() = node;
+        }
+        node->getParent() = right;
+
         node->setHeight(max(height(node->getLeft()), height(node->getRight())) + 1);
         right->setHeight(max(height(right->getLeft()), height(right->getRight())) + 1);
 
@@ -304,6 +360,13 @@ private:
         TreeNode<T> *left = node->getLeft();
         node->getLeft() = left->getRight();
         left->getRight() = node;
+
+        left->getParent() = node->getParent();
+        if (node->getLeft())
+        {
+            node->getLeft()->getParent() = node;
+        }
+        node->getParent() = left;
 
         node->setHeight(max(height(node->getLeft()), height(node->getRight())) + 1);
         left->setHeight(max(height(left->getLeft()), height(left->getRight())) + 1);
@@ -399,9 +462,8 @@ private:
             size -= 1;
             if (node->getLeft() && node->getRight())
             {
-
                 TreeNode<T> *parent = node;
-                TreeNode<T> *succ = root->getRight();
+                TreeNode<T> *succ = node->getRight();
 
                 while (succ->getLeft())
                 {
@@ -426,12 +488,14 @@ private:
             else if (node->getLeft())
             {
                 TreeNode<T> *tmp = node->getLeft();
+                tmp->getParent() = node->getParent();
                 delete node;
                 return tmp;
             }
             else if (node->getRight())
             {
                 TreeNode<T> *tmp = node->getRight();
+                tmp->getParent() = node->getParent();
                 delete node;
                 return tmp;
             }

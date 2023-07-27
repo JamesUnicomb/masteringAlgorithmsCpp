@@ -44,4 +44,17 @@ int main()
             cout << "did not find:" << s << endl;
         }
     }
+
+    cout << "iterator display start:" << endl;
+
+    TreeNode<int> *node = tree.begin();
+    Tree<int>::iterator it;
+
+    while (node)
+    {
+        cout << node->getData() << " ";
+        node = it.next(node);
+    }
+    cout << endl
+         << ": iterator display finish" << endl;
 }

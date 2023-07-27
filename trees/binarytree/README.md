@@ -58,6 +58,9 @@ did not find:8
 did not find:9
 did not find:10
 did not find:11
+iterator display start:
+0 1 2 4 5 6
+: iterator display finish
 ```
 
 ## Deleting a Tree and its Nodes
@@ -108,6 +111,9 @@ did not find:8
 did not find:9
 did not find:10
 did not find:11
+iterator display start:
+0 1 2 4 5 6
+: iterator display finish
 ~TreeNode<T>(0)                       # deletion when Tree goes out of scope
 ~TreeNode<T>(1)                       # deletion when Tree goes out of scope
 ~TreeNode<T>(2)                       # deletion when Tree goes out of scope
