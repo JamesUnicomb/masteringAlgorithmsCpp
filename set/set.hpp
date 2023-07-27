@@ -13,6 +13,8 @@ class Set
 {
 public:
     Set() : tree() {}
+    SetElmt<T> *begin() { return tree.begin(); }
+    SetElmt<T> *end() { return tree.end(); }
     void insert(T data)
     {
         tree.insert(data);
@@ -31,21 +33,18 @@ public:
     }
     void display()
     {
-        LList<T> *list = tree.toList();
-        LListElmt<T> *node = list->getHead();
+        typename Tree<T>::iterator it;
+        SetElmt<T> *node = tree.begin(), *next;
+
         std::cout << "{";
-        while (node)
+        while (next = it.next(node))
         {
             std::cout << node->getData();
-            if (node->getNext())
-                std::cout << ",";
-            node = node->getNext();
+            std::cout << ",";
+            node = next;
         }
+        std::cout << node->getData();
         std::cout << "}" << std::endl;
-    }
-    LList<T> *toList()
-    {
-        return tree.toList();
     }
 
 private:
@@ -56,32 +55,34 @@ template <typename T>
 Set<T> setIntersection(Set<T> &a, Set<T> &b)
 {
     Set<T> c;
+    typename Tree<T>::iterator it;
+
     int n = a.getSize(), m = b.getSize();
 
     if (n < m)
     {
-        LListElmt<T> *node = a.toList()->getHead();
+        SetElmt<T> *node = a.begin();
 
-        while (node)
+        while (node != a.end())
         {
             if (b.find(node->getData()))
             {
                 c.insert(node->getData());
             }
-            node = node->getNext();
+            node = it.next(node);
         }
     }
     else
     {
-        LListElmt<T> *node = b.toList()->getHead();
+        SetElmt<T> *node = b.begin();
 
-        while (node)
+        while (node != b.end())
         {
             if (a.find(node->getData()))
             {
                 c.insert(node->getData());
             }
-            node = node->getNext();
+            node = it.next(node);
         }
     }
 
@@ -92,21 +93,22 @@ template <typename T>
 Set<T> setUnion(Set<T> &a, Set<T> &b)
 {
     Set<T> c;
+    typename Tree<T>::iterator it;
 
-    LListElmt<T> *node = a.toList()->getHead();
+    SetElmt<T> *node = a.begin();
 
-    while (node)
+    while (node != a.end())
     {
         c.insert(node->getData());
-        node = node->getNext();
+        node = it.next(node);
     }
 
-    node = b.toList()->getHead();
+    node = b.begin();
 
-    while (node)
+    while (node != b.end())
     {
         c.insert(node->getData());
-        node = node->getNext();
+        node = it.next(node);
     }
 
     return c;
@@ -115,15 +117,16 @@ Set<T> setUnion(Set<T> &a, Set<T> &b)
 template <typename T>
 bool isSubset(Set<T> &a, Set<T> &b)
 {
-    LListElmt<T> *node = a.toList()->getHead();
+    typename Tree<T>::iterator it;
+    SetElmt<T> *node = a.begin();
 
-    while (node)
+    while (node != a.end())
     {
         if (!b.find(node->getData()))
         {
             return false;
         }
-        node = node->getNext();
+        node = it.next(node);
     }
 
     return true;
