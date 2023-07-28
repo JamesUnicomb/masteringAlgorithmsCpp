@@ -44,13 +44,9 @@ int main()
 
     cout << "iterator display start:" << endl;
 
-    TreeNode<int> *node = tree.begin();
-    Tree<int>::iterator it;
-
-    while (node != tree.end())
+    for (Tree<int>::iterator it = tree.begin(); it != tree.end(); it++)
     {
-        cout << node->getData() << " ";
-        node = it.next(node);
+        cout << it->getData() << " ";
     }
     cout << endl
          << ":iterator display finish" << endl;

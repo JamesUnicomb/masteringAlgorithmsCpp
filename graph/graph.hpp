@@ -23,7 +23,7 @@ public:
 
 private:
     GraphVertex<T> *vertex;
-    Set<GraphVertex<T>> adjlist;
+    Set<GraphVertex<T>> adj;
 };
 
 template <typename T>
@@ -36,7 +36,7 @@ private:
     int vcnt;
     int ecnt;
 
-    Set<AdjacencyList<T>> adjlist;
+    Set<AdjacencyList<T>> adjlists;
 };
 
 #endif

@@ -15,6 +15,9 @@ public:
     Set() : tree() {}
     SetElmt<T> *begin() { return tree.begin(); }
     SetElmt<T> *end() { return tree.end(); }
+
+    using iterator = typename Tree<T>::iterator;
+
     void insert(T data)
     {
         tree.insert(data);
@@ -33,17 +36,18 @@ public:
     }
     void display()
     {
-        typename Tree<T>::iterator it;
-        SetElmt<T> *node = tree.begin(), *next;
-
         std::cout << "{";
-        while (next = it.next(node))
+
+        iterator it = tree.begin();
+        while (it != tree.end())
         {
-            std::cout << node->getData();
-            std::cout << ",";
-            node = next;
+            std::cout << it->getData();
+            it++;
+            if (it != nullptr)
+            {
+                std::cout << ",";
+            }
         }
-        std::cout << node->getData();
         std::cout << "}" << std::endl;
     }
 
@@ -55,34 +59,28 @@ template <typename T>
 Set<T> setIntersection(Set<T> &a, Set<T> &b)
 {
     Set<T> c;
-    typename Tree<T>::iterator it;
+    typename Set<T>::iterator it;
 
     int n = a.getSize(), m = b.getSize();
 
     if (n < m)
     {
-        SetElmt<T> *node = a.begin();
-
-        while (node != a.end())
+        for (it = a.begin(); it != a.end(); it++)
         {
-            if (b.find(node->getData()))
+            if (b.find(it->getData()))
             {
-                c.insert(node->getData());
+                c.insert(it->getData());
             }
-            node = it.next(node);
         }
     }
     else
     {
-        SetElmt<T> *node = b.begin();
-
-        while (node != b.end())
+        for (it = b.begin(); it != b.end(); it++)
         {
-            if (a.find(node->getData()))
+            if (a.find(it->getData()))
             {
-                c.insert(node->getData());
+                c.insert(it->getData());
             }
-            node = it.next(node);
         }
     }
 
@@ -93,22 +91,16 @@ template <typename T>
 Set<T> setUnion(Set<T> &a, Set<T> &b)
 {
     Set<T> c;
-    typename Tree<T>::iterator it;
+    typename Set<T>::iterator it;
 
-    SetElmt<T> *node = a.begin();
-
-    while (node != a.end())
+    for (it = a.begin(); it != a.end(); it++)
     {
-        c.insert(node->getData());
-        node = it.next(node);
+        c.insert(it->getData());
     }
 
-    node = b.begin();
-
-    while (node != b.end())
+    for (it = b.begin(); it != b.end(); it++)
     {
-        c.insert(node->getData());
-        node = it.next(node);
+        c.insert(it->getData());
     }
 
     return c;
@@ -117,16 +109,14 @@ Set<T> setUnion(Set<T> &a, Set<T> &b)
 template <typename T>
 bool isSubset(Set<T> &a, Set<T> &b)
 {
-    typename Tree<T>::iterator it;
-    SetElmt<T> *node = a.begin();
+    typename Set<T>::iterator it;
 
-    while (node != a.end())
+    for (it = a.begin(); it != a.end(); it++)
     {
-        if (!b.find(node->getData()))
+        if (!b.find(it->getData()))
         {
             return false;
         }
-        node = it.next(node);
     }
 
     return true;

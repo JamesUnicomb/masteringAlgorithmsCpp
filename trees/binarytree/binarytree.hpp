@@ -65,8 +65,11 @@ public:
         return ((a > b) ? a : b);
     }
 
-    struct iterator
+    class iterator
     {
+    public:
+        iterator() : ptr(nullptr) {}
+        iterator(TreeNode<T> *node) : ptr(node) {}
         static TreeNode<T> *first(TreeNode<T> *node)
         {
             if (node)
@@ -78,6 +81,36 @@ public:
                 return node;
             }
             return nullptr;
+        }
+        TreeNode<T> &operator*()
+        {
+            return *ptr;
+        }
+        iterator *operator=(TreeNode<T> *rhs)
+        {
+            ptr = rhs;
+            return this;
+        }
+        bool operator!=(TreeNode<T> *rhs)
+        {
+            return ptr != rhs;
+        }
+        iterator operator++()
+        {
+            next();
+            return *this;
+        }
+        iterator operator++(int)
+        {
+            next();
+            return *this;
+        }
+        TreeNode<T> *operator->() { return ptr; }
+
+    private:
+        void next()
+        {
+            ptr = next(ptr);
         }
         TreeNode<T> *next(TreeNode<T> *node)
         {
@@ -98,6 +131,7 @@ public:
 
             return nullptr;
         }
+        TreeNode<T> *ptr;
     };
 
     TreeNode<T> *begin()
