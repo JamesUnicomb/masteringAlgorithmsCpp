@@ -30,6 +30,16 @@ class LList
 public:
     int size;
     LList() : size(0), head(nullptr), tail(nullptr) {}
+    LList(LList<T> &rhs) : size(0), head(nullptr), tail(nullptr)
+    {
+        LListElmt<T> *node = rhs.getHead(), *next;
+
+        while (node)
+        {
+            this->insertTail(node->getData());
+            node = node->getNext();
+        }
+    }
     const int getSize() { return size; }
     LListElmt<T> *getHead() const { return head; }
     LListElmt<T> *getTail() const { return tail; }

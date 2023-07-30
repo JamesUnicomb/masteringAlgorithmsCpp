@@ -6,52 +6,24 @@
 #include "../set/set.hpp"
 
 template <typename T>
-class GraphVertex
-{
-public:
-    GraphVertex(T data) : data(new T(data)) {}
-    T getData() { return *data; }
-    bool operator<(GraphVertex<T> rhs)
-    {
-        return this->getData() < rhs->getData();
-    }
-    ~GraphVertex()
-    {
-        delete data;
-    }
-
-private:
-    T *data;
-};
-
-template <typename T>
 class AdjacencyList
 {
 public:
-    AdjacencyList(T data) : vertex(new GraphVertex<T>(data)), adj(new Set<GraphVertex<T> *>()) {}
-    GraphVertex<T> *&getVertex() { return vertex; }
-    Set<GraphVertex<T> *> *&getAdjacency() { return adj; }
-    void addAdjacent(GraphVertex<T> *neighbor)
+    AdjacencyList(T data) : vertex(new T(data)), adjlist() {}
+    T getVertex() { return *vertex; }
+    void addAdjacency(AdjacencyList<T> *adj)
     {
-        adj->insert(neighbor);
+        adjlist.insert(adj);
     }
-    bool operator<(AdjacencyList<T> rhs)
+    Set<AdjacencyList<T> *> &getAdjacency() { return adjlist; }
+    ~AdjacencyList()
     {
-        return this->getVertex()->getData() < rhs.getVertex()->getData();
+        std::cout << "adjacency delete: " << *vertex << std::endl;
     }
-    bool operator>(AdjacencyList<T> rhs)
-    {
-        return this->getVertex()->getData() > rhs.getVertex()->getData();
-    }
-    bool operator==(AdjacencyList<T> rhs)
-    {
-        return this->getVertex()->getData() == rhs.getVertex()->getData();
-    }
-    ~AdjacencyList() {}
 
 private:
-    GraphVertex<T> *vertex;
-    Set<GraphVertex<T> *> *adj;
+    T *vertex;
+    Set<AdjacencyList<T> *> adjlist;
 };
 
 template <typename T>
@@ -63,40 +35,91 @@ public:
     int getEdgeCount() const { return ecnt; }
     void addVertex(T data)
     {
-        adjlists.insert(AdjacencyList<T>(data));
+        adjlists.insert(new AdjacencyList<T>(data));
         vcnt += 1;
     }
-    void addEdge(T fromNode, T toNode)
+    void addEdge(AdjacencyList<T> *fromNode, AdjacencyList<T> *toNode)
     {
-        AdjacencyList<T> *fromAdjList = find(fromNode);
-        fromAdjList->addAdjacent(find(toNode)->getVertex());
+        fromNode->addAdjacency(toNode);
         ecnt += 1;
-    }
-    void display()
-    {
-        typename Set<AdjacencyList<T>>::iterator vert;
-        typename Set<GraphVertex<T> *>::iterator adj;
-
-        for (vert = adjlists.begin(); vert != adjlists.end(); vert++)
-        {
-            for (adj = vert->getData().getAdjacency()->begin(); adj != vert->getData().getAdjacency()->end(); adj++)
-            {
-                std::cout << vert->getData().getVertex()->getData() << "," << adj->getData()->getData() << std::endl;
-            }
-        }
     }
     AdjacencyList<T> *find(T data)
     {
-        return &adjlists.find(AdjacencyList<T>(data))->getData();
+        AdjacencyList<T> *node;
+        typename Set<AdjacencyList<T> *>::iterator it;
+
+        it = adjlists.begin();
+
+        while (it != adjlists.end())
+        {
+            if (it->getData()->getVertex() == data)
+            {
+                node = it->getData();
+                break;
+            }
+            it++;
+        }
+
+        return node;
+    }
+
+    void display()
+    {
+        typename Set<AdjacencyList<T> *>::iterator nodeIt, edgeIt;
+
+        for (nodeIt = adjlists.begin(); nodeIt != adjlists.end(); nodeIt++)
+        {
+            AdjacencyList<T> *vertex = nodeIt->getData();
+
+            for (edgeIt = vertex->getAdjacency().begin(); edgeIt != vertex->getAdjacency().end(); edgeIt++)
+            {
+                std::cout << vertex->getVertex() << "," << edgeIt->getData()->getVertex() << std::endl;
+            }
+        }
     }
 
     ~Graph() {}
+    Set<AdjacencyList<T> *> adjlists;
 
 private:
     int vcnt;
     int ecnt;
-
-    Set<AdjacencyList<T>> adjlists;
 };
+
+template <typename T>
+void get_paths(AdjacencyList<T> *fromNode, AdjacencyList<T> *toNode, Set<T> &s, LList<T> l)
+{
+    s.insert(fromNode->getVertex());
+
+    l.insertTail(fromNode->getVertex());
+
+    if (fromNode == toNode)
+    {
+        l.display();
+        return;
+    }
+
+    AdjacencyList<T> *node = fromNode;
+    typename Set<AdjacencyList<T> *>::iterator it;
+
+    for (it = node->getAdjacency().begin(); it != node->getAdjacency().end(); it++)
+    {
+        if (!s.find(it->getData()->getVertex()))
+        {
+            get_paths(it->getData(), toNode, s, l);
+        }
+    }
+}
+
+template <typename T>
+void get_paths(AdjacencyList<T> *fromNode, AdjacencyList<T> *toNode)
+{
+    if (fromNode && toNode)
+    {
+        LList<int> l;
+        Set<int> s;
+        get_paths(fromNode, toNode, s, l);
+    }
+}
 
 #endif
