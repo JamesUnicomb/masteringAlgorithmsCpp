@@ -86,39 +86,31 @@ private:
     int ecnt;
 };
 
-template <typename T>
-void get_paths(AdjacencyList<T> *fromNode, AdjacencyList<T> *toNode, Set<T> &s, LList<T> l)
+template <typename T, typename Pred>
+void depth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred, Set<AdjacencyList<T> *> &s)
 {
-    s.insert(fromNode->getVertex());
-
-    l.insertTail(fromNode->getVertex());
-
-    if (fromNode == toNode)
-    {
-        l.display();
-        return;
-    }
-
-    AdjacencyList<T> *node = fromNode;
     typename Set<AdjacencyList<T> *>::iterator it;
 
-    for (it = node->getAdjacency().begin(); it != node->getAdjacency().end(); it++)
+    pred(vertex);
+
+    s.insert(vertex);
+
+    for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
     {
-        if (!s.find(it->getData()->getVertex()))
+        if (!s.find(it->getData()))
         {
-            get_paths(it->getData(), toNode, s, l);
+            depth_first_search(graph, it->getData(), pred, s);
         }
     }
 }
 
-template <typename T>
-void get_paths(AdjacencyList<T> *fromNode, AdjacencyList<T> *toNode)
+template <typename T, typename Pred>
+void depth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred)
 {
-    if (fromNode && toNode)
+    if (vertex)
     {
-        LList<int> l;
-        Set<int> s;
-        get_paths(fromNode, toNode, s, l);
+        Set<AdjacencyList<T> *> s;
+        return depth_first_search(graph, vertex, pred, s);
     }
 }
 
