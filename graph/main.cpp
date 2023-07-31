@@ -49,7 +49,7 @@ int main()
     cout << "edge count = " << graph.getEdgeCount() << endl;
 
     PathExistsPred<int> p(graph.find(3));
-    depth_first_search(graph, graph.find(1), p);
+    breadth_first_search(graph, graph.find(1), p);
     if (p.pathFound())
     {
         cout << "path found" << endl;

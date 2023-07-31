@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "../linkedlist/linkedlist.hpp"
+#include "../stack/stack.hpp"
+#include "../queue/queue.hpp"
 #include "../set/set.hpp"
 
 template <typename T>
@@ -87,30 +89,54 @@ private:
 };
 
 template <typename T, typename Pred>
-void depth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred, Set<AdjacencyList<T> *> &s)
+void depth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred)
 {
+    Set<AdjacencyList<T> *> visited;
+    Stack<AdjacencyList<T> *> next;
     typename Set<AdjacencyList<T> *>::iterator it;
 
-    pred(vertex);
+    next.push(vertex);
 
-    s.insert(vertex);
-
-    for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
+    while (next.getSize())
     {
-        if (!s.find(it->getData()))
+        vertex = next.pop()->getData();
+
+        pred(vertex);
+        visited.insert(vertex);
+
+        for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
         {
-            depth_first_search(graph, it->getData(), pred, s);
+            if (!visited.find(it->getData()))
+            {
+                next.push(it->getData());
+            }
         }
     }
 }
 
 template <typename T, typename Pred>
-void depth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred)
+void breadth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred)
 {
-    if (vertex)
+    Set<AdjacencyList<T> *> visited;
+    Queue<AdjacencyList<T> *> next;
+    typename Set<AdjacencyList<T> *>::iterator it;
+
+    next.enqueue(vertex);
+
+    while (next.getSize())
     {
-        Set<AdjacencyList<T> *> s;
-        return depth_first_search(graph, vertex, pred, s);
+        vertex = next.dequeue()->getData();
+
+        pred(vertex);
+        visited.insert(vertex);
+
+        for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
+        {
+            if (!visited.find(it->getData()))
+            {
+                next.enqueue(it->getData());
+            }
+        }
     }
 }
 
