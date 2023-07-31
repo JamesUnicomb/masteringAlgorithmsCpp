@@ -52,21 +52,21 @@ int main()
     depth_first_search(graph, graph.find(1), p);
     if (p.pathFound())
     {
-        cout << "found path" << endl;
+        cout << "path found" << endl;
     }
     else
     {
-        cout << "no found path" << endl;
+        cout << "path not found" << endl;
     }
 
     p = PathExistsPred<int>(graph.find(7));
     depth_first_search(graph, graph.find(1), p);
     if (p.pathFound())
     {
-        cout << "found path" << endl;
+        cout << "path found" << endl;
     }
     else
     {
-        cout << "no found path" << endl;
+        cout << "path not found" << endl;
     }
 }
