@@ -2,6 +2,8 @@
 #define __QKSORT_HPP__
 
 #include <iostream>
+#include "../sort.hpp"
+#include "../issort/issort.hpp"
 
 template <typename T, typename F>
 int partition(T *data, int i, int k, F f)
@@ -13,28 +15,8 @@ int partition(T *data, int i, int k, F f)
     r[1] = (rand() % (k - i + 1)) + i;
     r[2] = (rand() % (k - i + 1)) + i;
 
-    int jtmp;
-    if (r[0] > r[1])
-    {
-        jtmp = r[1];
-        r[1] = r[0];
-        r[0] = jtmp;
-    }
-
-    if (r[1] > r[2])
-    {
-        jtmp = r[2];
-        r[2] = r[1];
-        r[1] = jtmp;
-    }
-
-    if (r[0] > r[1])
-    {
-        jtmp = r[1];
-        r[1] = r[0];
-        r[0] = jtmp;
-    }
-
+    CompareT<T> c;
+    issort(r, 3);
     pval = data[r[1]];
 
     while (true)
@@ -72,6 +54,12 @@ void qksort(T *data, int i, int k, F f)
         qksort(data, i, j, f);
         i = j + 1;
     }
+}
+
+template <typename T, typename F>
+void qksort(T *data, int size, F f)
+{
+    qksort(data, 0, size - 1, f);
 }
 
 #endif

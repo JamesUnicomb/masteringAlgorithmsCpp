@@ -32,7 +32,7 @@ int main()
     }
     cout << endl;
 
-    qksort<int>(arr, 0, 9, f);
+    qksort<int>(arr, 10, f);
 
     for (int i = 0; i < 10; i++)
     {
