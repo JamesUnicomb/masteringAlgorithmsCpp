@@ -50,4 +50,14 @@ int main()
     }
     cout << endl
          << ":iterator display finish" << endl;
+
+    cout << "iterator display start:" << endl;
+
+    for (Tree<int>::preorder_iterator it = tree.preorder_begin(); it != tree.preorder_end(); it++)
+    {
+        cout << it->getData() << " ";
+    }
+    cout << endl
+         << ":iterator display finish" << endl;
+    tree.traversePreOrder(pn);
 }
