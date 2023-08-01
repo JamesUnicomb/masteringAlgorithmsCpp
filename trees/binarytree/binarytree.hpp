@@ -60,11 +60,36 @@ public:
     Tree() : size(0), root(nullptr) {}
     Tree(Tree<T> &rhs) : size(0), root(nullptr)
     {
-        Tree<T>::iterator it;
+        TreeNode<T> *node = rhs.getRoot();
 
-        for (it = rhs.begin(); it != rhs.end(); it++)
+        while (node)
         {
-            this->insert(it->getData());
+            if (node->getLeft() == nullptr)
+            {
+                this->insert(node->getData());
+                node = node->getRight();
+            }
+            else
+            {
+                TreeNode<T> *current = node->getLeft();
+                while (current->getRight() != nullptr && current->getRight() != node)
+                {
+                    current = current->getRight();
+                }
+
+                if (current->getRight() == node)
+                {
+                    current->getRight() = nullptr;
+                    node = node->getRight();
+                }
+
+                else
+                {
+                    this->insert(node->getData());
+                    current->getRight() = node;
+                    node = node->getLeft();
+                }
+            }
         }
     }
     inline TreeNode<T> *&getRoot() { return root; }
