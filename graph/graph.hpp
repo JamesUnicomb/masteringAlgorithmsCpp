@@ -20,7 +20,7 @@ public:
     Set<AdjacencyList<T> *> &getAdjacency() { return adjlist; }
     ~AdjacencyList()
     {
-        std::cout << "adjacency delete: " << *vertex << std::endl;
+        delete vertex;
     }
 
 private:
@@ -35,6 +35,7 @@ public:
     Graph() : vcnt(0), ecnt(0) {}
     int getVertexCount() const { return vcnt; }
     int getEdgeCount() const { return ecnt; }
+    Set<AdjacencyList<T> *> &getAdjacencyLists() { return adjlists; }
     void addVertex(T data)
     {
         adjlists.insert(new AdjacencyList<T>(data));
@@ -81,9 +82,10 @@ public:
     }
 
     ~Graph() {}
-    Set<AdjacencyList<T> *> adjlists;
 
 private:
+    Set<AdjacencyList<T> *> adjlists;
+
     int vcnt;
     int ecnt;
 };
@@ -138,6 +140,52 @@ void breadth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred 
             }
         }
     }
+}
+
+template <typename T>
+bool is_cyclic(AdjacencyList<T> *vertex)
+{
+    Set<AdjacencyList<T> *> visited;
+    Queue<AdjacencyList<T> *> next;
+    typename Set<AdjacencyList<T> *>::iterator it;
+
+    next.enqueue(vertex);
+
+    while (next.getSize())
+    {
+        vertex = next.dequeue()->getData();
+
+        visited.insert(vertex);
+
+        for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
+        {
+            next.enqueue(it->getData());
+            if (visited.find(it->getData()))
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+template <typename T>
+bool is_cyclic(Graph<T> graph)
+{
+    AdjacencyList<T> *vertex;
+    typename Set<AdjacencyList<T> *>::iterator it;
+
+    for (it = graph.getAdjacencyLists().begin(); it != graph.getAdjacencyLists().end(); it++)
+    {
+        vertex = it->getData();
+        if (is_cyclic(vertex))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 #endif

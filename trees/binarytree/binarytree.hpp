@@ -58,6 +58,15 @@ class Tree
 {
 public:
     Tree() : size(0), root(nullptr) {}
+    Tree(Tree<T> &rhs) : size(0), root(nullptr)
+    {
+        Tree<T>::iterator it;
+
+        for (it = rhs.begin(); it != rhs.end(); it++)
+        {
+            this->insert(it->getData());
+        }
+    }
     inline TreeNode<T> *&getRoot() { return root; }
     inline int getSize() { return size; }
     inline int max(int a, int b)

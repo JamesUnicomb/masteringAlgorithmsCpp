@@ -69,4 +69,26 @@ int main()
     {
         cout << "path not found" << endl;
     }
+
+    if (is_cyclic(graph))
+    {
+        cout << "is cyclic" << endl;
+    }
+    else
+    {
+        cout << "is not cyclic" << endl;
+    }
+
+    graph.addEdge(graph.find(7), graph.find(5));
+
+    graph.display();
+
+    if (is_cyclic(graph))
+    {
+        cout << "is cyclic" << endl;
+    }
+    else
+    {
+        cout << "is not cyclic" << endl;
+    }
 }
