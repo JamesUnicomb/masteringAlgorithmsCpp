@@ -13,8 +13,8 @@ private:
 public:
     LListElmt() : data(nullptr), next(nullptr) {}
     LListElmt(T data) : data(new T(data)), next(nullptr) {}
-    LListElmt<T> *&getNext() { return next; }
-    T getData() { return *data; }
+    inline LListElmt<T> *&getNext() { return next; }
+    inline T &getData() { return *data; }
     ~LListElmt()
     {
 #if DEBUG
@@ -41,8 +41,8 @@ public:
         }
     }
     const int getSize() { return size; }
-    LListElmt<T> *getHead() const { return head; }
-    LListElmt<T> *getTail() const { return tail; }
+    inline LListElmt<T> *getHead() const { return head; }
+    inline LListElmt<T> *getTail() const { return tail; }
     void insertTail(T data)
     {
         insertNext(tail, data);
