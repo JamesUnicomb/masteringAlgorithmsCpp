@@ -43,12 +43,15 @@ public:
     }
     void addEdge(AdjacencyList<T> *fromNode, AdjacencyList<T> *toNode)
     {
-        fromNode->addAdjacency(toNode);
-        ecnt += 1;
+        if (fromNode && toNode)
+        {
+            fromNode->addAdjacency(toNode);
+            ecnt += 1;
+        }
     }
     AdjacencyList<T> *find(T data)
     {
-        AdjacencyList<T> *node;
+        AdjacencyList<T> *node = nullptr;
         typename Set<AdjacencyList<T> *>::iterator it;
 
         it = adjlists.begin();
@@ -186,6 +189,59 @@ bool is_cyclic(Graph<T> graph)
     }
 
     return false;
+}
+
+template <typename T>
+LList<T> find_shortest_path(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVertex)
+{
+    AdjacencyList<T> *vertex = fromVertex;
+    typename Set<AdjacencyList<T> *>::iterator it;
+    Set<AdjacencyList<T> *> visited;
+    Queue<AdjacencyList<T> *> next;
+    Graph<T> paths;
+
+    next.enqueue(vertex);
+
+    while (next.getSize())
+    {
+        vertex = next.dequeue()->getData();
+
+        paths.addVertex(vertex->getVertex());
+
+        for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
+        {
+            if (!visited.find(it->getData()))
+            {
+                if (!paths.find(it->getData()->getVertex()))
+                {
+                    paths.addVertex(it->getData()->getVertex());
+                }
+                paths.addEdge(paths.find(it->getData()->getVertex()), paths.find(vertex->getVertex()));
+                paths.addEdge(paths.find(vertex->getVertex()), paths.find(it->getData()->getVertex()));
+
+                next.enqueue(it->getData());
+                visited.insert(it->getData());
+            }
+        }
+    }
+
+    paths.display();
+
+    vertex = paths.find(toVertex->getVertex());
+
+    LList<T> path;
+
+    while (true)
+    {
+        path.insertHead(vertex->getVertex());
+        if (vertex->getVertex() == fromVertex->getVertex())
+        {
+            break;
+        }
+        vertex = vertex->getAdjacency().begin()->getData();
+    }
+
+    return path;
 }
 
 #endif

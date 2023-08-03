@@ -30,17 +30,13 @@ int main()
     graph.addVertex(2);
     graph.addVertex(3);
     graph.addVertex(4);
-    graph.addVertex(5);
-    graph.addVertex(6);
-    graph.addVertex(7);
 
     graph.addEdge(graph.find(1), graph.find(2));
-    graph.addEdge(graph.find(1), graph.find(6));
-    graph.addEdge(graph.find(3), graph.find(2));
+    graph.addEdge(graph.find(1), graph.find(3));
+    graph.addEdge(graph.find(2), graph.find(3));
+    graph.addEdge(graph.find(3), graph.find(3));
     graph.addEdge(graph.find(3), graph.find(4));
-    graph.addEdge(graph.find(4), graph.find(5));
-    graph.addEdge(graph.find(6), graph.find(5));
-    graph.addEdge(graph.find(5), graph.find(7));
+    graph.addEdge(graph.find(4), graph.find(3));
 
     cout << "edge list: " << endl;
     graph.display();
@@ -59,7 +55,7 @@ int main()
         cout << "path not found" << endl;
     }
 
-    p = PathExistsPred<int>(graph.find(7));
+    p = PathExistsPred<int>(graph.find(3));
     depth_first_search(graph, graph.find(1), p);
     if (p.pathFound())
     {
@@ -91,4 +87,6 @@ int main()
     {
         cout << "is not cyclic" << endl;
     }
+
+    find_shortest_path(graph.find(1), graph.find(4)).display();
 }
