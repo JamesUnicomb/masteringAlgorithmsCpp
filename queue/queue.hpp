@@ -23,12 +23,13 @@ public:
     }
     QueueElmt<T> *dequeue()
     {
-        QueueElmt<T> *node = new QueueElmt<T>;
-        *node = *this->getHead();
+        QueueElmt<T> *node = new QueueElmt<T>(this->getHead()->getData());
+
         if (node)
         {
             this->removeHead();
         }
+
         return node;
     }
 };

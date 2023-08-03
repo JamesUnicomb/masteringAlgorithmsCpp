@@ -21,6 +21,8 @@ public:
         std::cout << "~LListElmt<T>(" << *data << ")" << std::endl;
 #endif
         delete data;
+        data = nullptr;
+        next = nullptr;
     }
 };
 

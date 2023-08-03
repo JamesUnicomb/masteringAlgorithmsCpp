@@ -13,6 +13,7 @@ int main()
     queue.enqueue(3);
 
     cout << "size = " << queue.getSize() << endl;
+    cout << "peek = " << queue.peek()->getData() << endl;
     cout << "dequeue = " << queue.dequeue()->getData() << endl;
     cout << "peek = " << queue.peek()->getData() << endl;
     cout << "dequeue = " << queue.dequeue()->getData() << endl;
