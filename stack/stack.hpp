@@ -23,8 +23,8 @@ public:
     }
     StackElmt<T> *pop()
     {
-        StackElmt<T> *node = new StackElmt<T>;
-        *node = *this->getHead();
+        StackElmt<T> *node = new StackElmt<T>(this->getHead()->getData());
+
         if (node)
         {
             this->removeHead();
