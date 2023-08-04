@@ -2,6 +2,7 @@
 #define __MGSORT_HPP__
 
 #include "../sort.hpp"
+#include <cstring>
 
 template <typename T, typename F>
 void merge(T *data, int i, int j, int k, F f)
