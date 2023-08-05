@@ -10,9 +10,9 @@ int main()
     kvtree.insert("james", 1);
     kvtree.insert("alex", 2);
     kvtree.insert("michael", 3);
-    cout << "hello tree" << endl;
+    cout << "key value tree example:" << endl;
 
     KeyValueElmt<string, int> *kv = kvtree.find("michael");
 
-    cout << kv->key << " = " << kv->data << endl;
+    cout << kv->getKey() << " = " << kv->getData() << endl;
 }

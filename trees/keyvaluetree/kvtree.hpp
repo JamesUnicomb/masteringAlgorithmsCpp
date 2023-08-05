@@ -21,7 +21,16 @@ public:
     {
         return this->key == rhs.key;
     }
+    K getKey()
+    {
+        return key;
+    }
+    T getData()
+    {
+        return data;
+    }
 
+private:
     K key;
     T data;
 };
@@ -38,6 +47,16 @@ public:
     {
         return &tree.find(KeyValueElmt<K, T>(key))->getData();
     }
+    TreeNode<KeyValueElmt<K, T>> *begin()
+    {
+        return tree.begin();
+    }
+    TreeNode<KeyValueElmt<K, T>> *end()
+    {
+        return tree.end();
+    }
+
+    using iterator = typename Tree<KeyValueElmt<K, T>>::iterator;
 
 private:
     Tree<KeyValueElmt<K, T>> tree;

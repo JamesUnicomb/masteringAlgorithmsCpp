@@ -6,6 +6,7 @@
 #include "../stack/stack.hpp"
 #include "../queue/queue.hpp"
 #include "../set/set.hpp"
+#include "../trees/keyvaluetree/kvtree.hpp"
 
 template <typename T>
 class AdjacencyList
@@ -35,47 +36,37 @@ public:
     Graph() : vcnt(0), ecnt(0) {}
     int getVertexCount() const { return vcnt; }
     int getEdgeCount() const { return ecnt; }
-    Set<AdjacencyList<T> *> &getAdjacencyLists() { return adjlists; }
+    KeyValueTree<T, AdjacencyList<T> *> &getAdjacencyLists() { return adjlists; }
     void addVertex(T data)
     {
-        adjlists.insert(new AdjacencyList<T>(data));
+        adjlists.insert(data, new AdjacencyList<T>(data));
         vcnt += 1;
     }
-    void addEdge(AdjacencyList<T> *fromNode, AdjacencyList<T> *toNode)
+    void addEdge(T from, T to)
     {
-        if (fromNode && toNode)
+        AdjacencyList<T> *fromVertex = find(from);
+        AdjacencyList<T> *toVertex = find(to);
+
+        if (fromVertex && toVertex)
         {
-            fromNode->addAdjacency(toNode);
+            fromVertex->addAdjacency(toVertex);
             ecnt += 1;
         }
     }
     AdjacencyList<T> *find(T data)
     {
-        AdjacencyList<T> *node = nullptr;
-        typename Set<AdjacencyList<T> *>::iterator it;
 
-        it = adjlists.begin();
-
-        while (it != adjlists.end())
-        {
-            if (it->getData()->getVertex() == data)
-            {
-                node = it->getData();
-                break;
-            }
-            it++;
-        }
-
-        return node;
+        return adjlists.find(data)->getData();
     }
 
-    void display()
+    void display_edge_list()
     {
-        typename Set<AdjacencyList<T> *>::iterator nodeIt, edgeIt;
+        typename KeyValueTree<T, AdjacencyList<T> *>::iterator vertexIt;
+        typename Set<AdjacencyList<T> *>::iterator edgeIt;
 
-        for (nodeIt = adjlists.begin(); nodeIt != adjlists.end(); nodeIt++)
+        for (vertexIt = adjlists.begin(); vertexIt != adjlists.end(); vertexIt++)
         {
-            AdjacencyList<T> *vertex = nodeIt->getData();
+            AdjacencyList<T> *vertex = vertexIt->getData().getData();
 
             for (edgeIt = vertex->getAdjacency().begin(); edgeIt != vertex->getAdjacency().end(); edgeIt++)
             {
@@ -84,17 +75,30 @@ public:
         }
     }
 
+    void display_vertices()
+    {
+        typename KeyValueTree<T, AdjacencyList<T> *>::iterator vertexIt;
+        typename Set<AdjacencyList<T> *>::iterator edgeIt;
+
+        for (vertexIt = adjlists.begin(); vertexIt != adjlists.end(); vertexIt++)
+        {
+            AdjacencyList<T> *vertex = vertexIt->getData().getData();
+
+            std::cout << vertex->getVertex() << std::endl;
+        }
+    }
+
     ~Graph() {}
 
 private:
-    Set<AdjacencyList<T> *> adjlists;
+    KeyValueTree<T, AdjacencyList<T> *> adjlists;
 
     int vcnt;
     int ecnt;
 };
 
 template <typename T, typename Pred>
-void depth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred)
+void depth_first_search(AdjacencyList<T> *vertex, Pred &pred)
 {
     Set<AdjacencyList<T> *> visited;
     Stack<AdjacencyList<T> *> next;
@@ -120,7 +124,7 @@ void depth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &p
 }
 
 template <typename T, typename Pred>
-void breadth_first_search(const Graph<T> &graph, AdjacencyList<T> *vertex, Pred &pred)
+void breadth_first_search(AdjacencyList<T> *vertex, Pred &pred)
 {
     Set<AdjacencyList<T> *> visited;
     Queue<AdjacencyList<T> *> next;
@@ -177,11 +181,11 @@ template <typename T>
 bool is_cyclic(Graph<T> graph)
 {
     AdjacencyList<T> *vertex;
-    typename Set<AdjacencyList<T> *>::iterator it;
+    typename KeyValueTree<T, AdjacencyList<T> *>::iterator it;
 
     for (it = graph.getAdjacencyLists().begin(); it != graph.getAdjacencyLists().end(); it++)
     {
-        vertex = it->getData();
+        vertex = it->getData().getData();
         if (is_cyclic(vertex))
         {
             return true;
@@ -212,12 +216,10 @@ LList<T> find_shortest_path(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVe
         {
             if (!visited.find(it->getData()))
             {
-                if (!paths.find(it->getData()->getVertex()))
-                {
-                    paths.addVertex(it->getData()->getVertex());
-                }
-                paths.addEdge(paths.find(it->getData()->getVertex()), paths.find(vertex->getVertex()));
-                paths.addEdge(paths.find(vertex->getVertex()), paths.find(it->getData()->getVertex()));
+                paths.addVertex(it->getData()->getVertex());
+
+                paths.addEdge(it->getData()->getVertex(), vertex->getVertex());
+                paths.addEdge(vertex->getVertex(), it->getData()->getVertex());
 
                 next.enqueue(it->getData());
                 visited.insert(it->getData());
@@ -225,7 +227,7 @@ LList<T> find_shortest_path(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVe
         }
     }
 
-    paths.display();
+    paths.display_edge_list();
 
     vertex = paths.find(toVertex->getVertex());
 
