@@ -219,7 +219,6 @@ LList<T> find_shortest_path(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVe
                 paths.addVertex(it->getData()->getVertex());
 
                 paths.addEdge(it->getData()->getVertex(), vertex->getVertex());
-                paths.addEdge(vertex->getVertex(), it->getData()->getVertex());
 
                 next.enqueue(it->getData());
                 visited.insert(it->getData());
