@@ -118,6 +118,8 @@ void depth_first_search(AdjacencyList<T> *vertex, Pred &pred)
             if (!visited.find(it->getData()))
             {
                 next.push(it->getData());
+                pred(it->getData());
+                pred(vertex, it->getData());
             }
         }
     }
@@ -144,6 +146,8 @@ void breadth_first_search(AdjacencyList<T> *vertex, Pred &pred)
             if (!visited.find(it->getData()))
             {
                 next.enqueue(it->getData());
+                pred(it->getData());
+                pred(vertex, it->getData());
             }
         }
     }

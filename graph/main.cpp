@@ -7,19 +7,49 @@ template <typename T>
 class PathExistsPred
 {
 public:
-    PathExistsPred(AdjacencyList<T> *node) : node(node), found(false) {}
+    PathExistsPred(AdjacencyList<T> *vertex) : vertex(vertex), found(false) {}
     bool pathFound() { return found; }
-    void operator()(AdjacencyList<T> *node)
+    void operator()(AdjacencyList<T> *vertex)
     {
-        if (this->node->getVertex() == node->getVertex())
+        if (this->vertex->getVertex() == vertex->getVertex())
         {
             found = true;
         }
     }
 
+    void operator()(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVertex)
+    {
+    }
+
 private:
-    AdjacencyList<T> *node;
+    AdjacencyList<T> *vertex;
     bool found;
+};
+
+template <typename T>
+class ShortestPathPred
+{
+public:
+    ShortestPathPred(AdjacencyList<T> *vertex) : vertex(vertex), found(false) {}
+    bool pathFound() { return found; }
+    void operator()(AdjacencyList<T> *vertex)
+    {
+        if (this->vertex->getVertex() == vertex->getVertex())
+        {
+            found = true;
+        }
+        paths.addVertex(vertex->getVertex());
+    }
+
+    void operator()(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVertex)
+    {
+
+        paths.addEdge(toVertex->getVertex(), fromVertex->getVertex());
+    }
+
+    AdjacencyList<T> *vertex;
+    bool found;
+    Graph<T> paths;
 };
 
 int main()
@@ -91,4 +121,10 @@ int main()
     // }
 
     find_shortest_path(graph.find(1), graph.find(4)).display();
+
+    ShortestPathPred<int> sp(graph.find(4));
+    breadth_first_search(graph.find(1), sp);
+
+    sp.paths.display_edge_list();
+    sp.paths.display_vertices();
 }
