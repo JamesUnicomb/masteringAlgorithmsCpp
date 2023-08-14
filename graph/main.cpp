@@ -3,25 +3,6 @@
 
 using namespace std;
 
-template <typename T>
-class PathExistsPred
-{
-public:
-    PathExistsPred(AdjacencyList<T> *node) : node(node), found(false) {}
-    bool pathFound() { return found; }
-    void operator()(AdjacencyList<T> *node)
-    {
-        if (this->node->getVertex() == node->getVertex())
-        {
-            found = true;
-        }
-    }
-
-private:
-    AdjacencyList<T> *node;
-    bool found;
-};
-
 int main()
 {
     Graph<int> graph;
@@ -46,20 +27,7 @@ int main()
     cout << "vertex count = " << graph.getVertexCount() << endl;
     cout << "edge count = " << graph.getEdgeCount() << endl;
 
-    PathExistsPred<int> p(graph.find(3));
-    breadth_first_search(graph.find(1), p);
-    if (p.pathFound())
-    {
-        cout << "path found" << endl;
-    }
-    else
-    {
-        cout << "path not found" << endl;
-    }
-
-    p = PathExistsPred<int>(graph.find(3));
-    depth_first_search(graph.find(1), p);
-    if (p.pathFound())
+    if (is_connected(graph.find(1), graph.find(3)))
     {
         cout << "path found" << endl;
     }
@@ -76,19 +44,6 @@ int main()
     {
         cout << "is not cyclic" << endl;
     }
-
-    // graph.addEdge(graph.find(7), graph.find(5));
-
-    // graph.display();
-
-    // if (is_cyclic(graph))
-    // {
-    //     cout << "is cyclic" << endl;
-    // }
-    // else
-    // {
-    //     cout << "is not cyclic" << endl;
-    // }
 
     find_shortest_path(graph.find(1), graph.find(4)).display();
 }

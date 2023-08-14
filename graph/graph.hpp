@@ -104,13 +104,14 @@ void depth_first_search(AdjacencyList<T> *vertex, Pred &pred)
     Stack<AdjacencyList<T> *> next;
     typename Set<AdjacencyList<T> *>::iterator it;
 
+    pred(vertex);
+
     next.push(vertex);
 
     while (next.getSize())
     {
         vertex = next.pop()->getData();
 
-        pred(vertex);
         visited.insert(vertex);
 
         for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
@@ -118,6 +119,8 @@ void depth_first_search(AdjacencyList<T> *vertex, Pred &pred)
             if (!visited.find(it->getData()))
             {
                 next.push(it->getData());
+                pred(it->getData());
+                pred(vertex, it->getData());
             }
         }
     }
@@ -130,13 +133,14 @@ void breadth_first_search(AdjacencyList<T> *vertex, Pred &pred)
     Queue<AdjacencyList<T> *> next;
     typename Set<AdjacencyList<T> *>::iterator it;
 
+    pred(vertex);
+
     next.enqueue(vertex);
 
     while (next.getSize())
     {
         vertex = next.dequeue()->getData();
 
-        pred(vertex);
         visited.insert(vertex);
 
         for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
@@ -144,9 +148,69 @@ void breadth_first_search(AdjacencyList<T> *vertex, Pred &pred)
             if (!visited.find(it->getData()))
             {
                 next.enqueue(it->getData());
+                pred(it->getData());
+                pred(vertex, it->getData());
             }
         }
     }
+}
+
+template <typename T>
+class PathExistsPred
+{
+public:
+    PathExistsPred(AdjacencyList<T> *vertex) : vertex(vertex), found(false) {}
+    bool pathFound() { return found; }
+    void operator()(AdjacencyList<T> *vertex)
+    {
+        if (this->vertex->getVertex() == vertex->getVertex())
+        {
+            found = true;
+        }
+    }
+
+    void operator()(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVertex)
+    {
+    }
+
+private:
+    AdjacencyList<T> *vertex;
+    bool found;
+};
+
+template <typename T>
+class ShortestPathPred
+{
+public:
+    ShortestPathPred(AdjacencyList<T> *vertex) : vertex(vertex), found(false) {}
+    bool pathFound() { return found; }
+    void operator()(AdjacencyList<T> *vertex)
+    {
+        if (this->vertex->getVertex() == vertex->getVertex())
+        {
+            found = true;
+        }
+        paths.addVertex(vertex->getVertex());
+    }
+
+    void operator()(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVertex)
+    {
+
+        paths.addEdge(toVertex->getVertex(), fromVertex->getVertex());
+    }
+
+    AdjacencyList<T> *vertex;
+    bool found;
+    Graph<T> paths;
+};
+
+template <typename T>
+bool is_connected(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVertex)
+{
+    PathExistsPred<int> p(toVertex);
+    breadth_first_search(fromVertex, p);
+
+    return p.pathFound();
 }
 
 template <typename T>
@@ -198,37 +262,10 @@ bool is_cyclic(Graph<T> graph)
 template <typename T>
 LList<T> find_shortest_path(AdjacencyList<T> *fromVertex, AdjacencyList<T> *toVertex)
 {
-    AdjacencyList<T> *vertex = fromVertex;
-    typename Set<AdjacencyList<T> *>::iterator it;
-    Set<AdjacencyList<T> *> visited;
-    Queue<AdjacencyList<T> *> next;
-    Graph<T> paths;
+    ShortestPathPred<int> sp(toVertex);
+    breadth_first_search(fromVertex, sp);
 
-    next.enqueue(vertex);
-
-    while (next.getSize())
-    {
-        vertex = next.dequeue()->getData();
-
-        paths.addVertex(vertex->getVertex());
-
-        for (it = vertex->getAdjacency().begin(); it != vertex->getAdjacency().end(); it++)
-        {
-            if (!visited.find(it->getData()))
-            {
-                paths.addVertex(it->getData()->getVertex());
-
-                paths.addEdge(it->getData()->getVertex(), vertex->getVertex());
-
-                next.enqueue(it->getData());
-                visited.insert(it->getData());
-            }
-        }
-    }
-
-    paths.display_edge_list();
-
-    vertex = paths.find(toVertex->getVertex());
+    AdjacencyList<T> *vertex = sp.paths.find(toVertex->getVertex());
 
     LList<T> path;
 

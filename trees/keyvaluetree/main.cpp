@@ -12,7 +12,7 @@ int main()
     kvtree.insert("michael", 3);
     cout << "key value tree example:" << endl;
 
-    KeyValueElmt<string, int> *kv = kvtree.find("michael");
+    auto *kv = kvtree.find("michael");
 
     cout << kv->getKey() << " = " << kv->getData() << endl;
 }
